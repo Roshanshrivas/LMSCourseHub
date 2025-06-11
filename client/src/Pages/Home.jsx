@@ -32,7 +32,7 @@ const Home = () => {
         ) : (
           <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 px-2">
             {course?.slice(0, 6).map((course, index) => {
-              return <CourseCard course={course} key={index} />;
+              return <CourseCard course={course} loading={loading} key={index} />;
             })}
           </div>
         )}

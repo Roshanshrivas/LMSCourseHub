@@ -34,17 +34,31 @@ import { useNavigate } from 'react-router-dom'
 import { Star, Clock, Users, ArrowRight, Bookmark } from 'lucide-react'
 
 
-const CourseCard = ({ course }) => {
+const CourseCard = ({ course, loading }) => {
   const navigate = useNavigate();
 
+   if (loading) {
+    return (
+      <div className="animate-pulse bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-5">
+        <div className="h-56 bg-gray-300 dark:bg-gray-700 rounded-xl mb-4" />
+        <div className="h-4 w-24 bg-gray-300 dark:bg-gray-700 rounded mb-2" />
+        <div className="h-5 w-3/4 bg-gray-300 dark:bg-gray-700 rounded mb-2" />
+        <div className="h-4 w-1/2 bg-gray-300 dark:bg-gray-700 rounded mb-4" />
+        <div className="flex justify-between">
+          <div className="h-6 w-16 bg-gray-300 dark:bg-gray-700 rounded" />
+          <div className="h-8 w-24 bg-gray-300 dark:bg-gray-700 rounded" />
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className="relative bg-white dark:bg-gray-900 rounded-2xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 group">
       {/* Image Container with Gradient Overlay */}
       <div className="relative h-56 overflow-hidden">
         <img 
-          src={course.courseThumbnail} 
-          alt={course.courseTitle}
+          src={course?.courseThumbnail} 
+          alt={course?.courseTitle}
           className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-80"></div>
@@ -77,10 +91,10 @@ const CourseCard = ({ course }) => {
 
         {/* Title and Description */}
         <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2 line-clamp-2 leading-tight">
-          {course.courseTitle}
+          {course?.courseTitle}
         </h3>
         <p className="text-gray-600 dark:text-gray-300 text-sm mb-4 line-clamp-2">
-          {course.subTitle}
+          {course?.subTitle}
         </p>
 
         {/* Stats */}
@@ -91,7 +105,7 @@ const CourseCard = ({ course }) => {
           </div>
           <div className="flex items-center">
             <Users className="w-4 h-4 mr-1" />
-            <span>{course.enrolledStudents?.length || 0}+ students</span>
+            <span>{course?.enrolledStudents?.length || 0}+ students</span>
           </div>
         </div>
 
@@ -109,7 +123,7 @@ const CourseCard = ({ course }) => {
               </>
             ) : (
               <span className="text-lg font-bold text-gray-900 dark:text-white">
-                ₹{course.coursePrice || ''}
+                ₹{course?.coursePrice || ''}
               </span>
             )}
           </div>
