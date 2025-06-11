@@ -21,7 +21,8 @@ app.use(express.urlencoded({ extended: true })); // to parse URL-encoded bodies
 app.use(cors({
     origin: process.env.CLIENT_URL,
     credentials: true,
-    // methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+    methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
 }))
 
 // apis 
