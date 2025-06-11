@@ -29,7 +29,7 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault()
     try {
-       const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/user/login`, input, {
+       const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/login`, input, {
         headers: {
           'Content-Type': 'application/json',
         },

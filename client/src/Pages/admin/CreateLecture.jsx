@@ -23,7 +23,7 @@ const CreateLecture = () => {
     const createLectureHandler = async () => {
         try {
             setLoading(true);
-            const res = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/course/${params?.courseId}/lecture`, 
+            const res = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/${params?.courseId}/lecture`, 
                 {lectureTitle},
                 {
                     headers: {
@@ -49,7 +49,7 @@ const CreateLecture = () => {
 
      const getLectures = async () => {
             try {
-                const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/course/${params?.courseId}/lecture`,
+                const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/${params?.courseId}/lecture`,
                     {withCredentials:true}
                 )
                 if(res.data.success){

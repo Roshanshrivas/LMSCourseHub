@@ -43,7 +43,7 @@ const LectureTab = () => {
             formData.append("file", file);
             setMediaProgress(true);
             try {
-                const res = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/media/upload-video`, formData, 
+                const res = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/upload-video`, formData, 
                     {onUploadProgress: ({loaded, total}) => {
                         setUploadProgress(Math.round((loaded * 100) / total))
                     }}
@@ -74,7 +74,7 @@ const LectureTab = () => {
         }
         try {
             setLoading(true);
-            const res = await axios.put(`${import.meta.env.VITE_BACKEND_URL}/course/${courseId}/lecture/${lectureId}`, data, {
+            const res = await axios.put(`${import.meta.env.VITE_BACKEND_URL}/${courseId}/lecture/${lectureId}`, data, {
                 headers: {
                     "Content-Type": "application/json"
                 },
@@ -100,7 +100,7 @@ const LectureTab = () => {
         e.preventDefault()
         try {
             setRemoveLoading(true);
-            const res = await axios.delete(`${import.meta.env.VITE_BACKEND_URL}/course/lecture/${lectureId}`, 
+            const res = await axios.delete(`${import.meta.env.VITE_BACKEND_URL}/lecture/${lectureId}`, 
                 {withCredentials:true}
             )
             if(res.data.success){

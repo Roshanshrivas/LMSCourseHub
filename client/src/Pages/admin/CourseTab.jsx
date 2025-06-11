@@ -39,7 +39,7 @@ const CourseTab = () => {
 
     const getCourseById = async () => {
       try {
-         const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/course/${id}`, 
+         const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/${id}`, 
           {withCredentials:true}
          )
          if(res.data.success){{
@@ -103,7 +103,7 @@ const CourseTab = () => {
 
       try {
         setLoading(true);
-         const res = await axios.put(`${import.meta.env.VITE_BACKEND_URL}/course/${id}`, formData, {
+         const res = await axios.put(`${import.meta.env.VITE_BACKEND_URL}/${id}`, formData, {
           headers: {
             "Content-Type": "multipart/form-data"
           },
@@ -124,7 +124,7 @@ const CourseTab = () => {
 
     const togglePublishUnpublish = async(action) => {
       try {
-        const res = await axios.patch(`${import.meta.env.VITE_BACKEND_URL}/course/${id}`, 
+        const res = await axios.patch(`${import.meta.env.VITE_BACKEND_URL}/${id}`, 
         {},
         {
           params: {

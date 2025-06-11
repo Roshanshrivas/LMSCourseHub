@@ -52,7 +52,7 @@ const Profile = () => {
         }
         try {
             setLoading(true);
-           const res = await axios.put(`${import.meta.env.VITE_BACKEND_URL}/user/profile/update`, formData, {
+           const res = await axios.put(`${import.meta.env.VITE_BACKEND_URL}/profile/update`, formData, {
             headers: {
                 "Content-Type": "multipart/form-data"
             },

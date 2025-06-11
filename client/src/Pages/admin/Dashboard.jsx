@@ -34,7 +34,7 @@ const AdminDashboard = () => {
     const fetchStats = async () => {
       try {
         const res = await axios.get(
-          `${import.meta.env.VITE_BACKEND_URL}/course/admin/stats`, {withCredentials: true}
+          `${import.meta.env.VITE_BACKEND_URL}/admin/stats`, {withCredentials: true}
         );
         setStats(res.data);
         setTopCourses(res.data.topCourses);

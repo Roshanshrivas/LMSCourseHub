@@ -16,7 +16,7 @@ const CoursePlayer = () => {
   useEffect(() => {
     const fetchLectures = async () => {
       try {
-        const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/course/${courseId}/lecture`, {
+        const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/${courseId}/lecture`, {
           withCredentials: true,
         });
         if (res.data.success) {

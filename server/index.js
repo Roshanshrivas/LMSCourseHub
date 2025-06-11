@@ -18,11 +18,12 @@ const PORT = process.env.PORT || 3000;
 app.use(express.json()) // to parse JSON bodies;
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: true })); // to parse URL-encoded bodies
+
 app.use(cors({
-    origin: process.env.CLIENT_URL,
+    origin: process.env.CLIENT_URL || "https://lms-course-hub.vercel.app",
     credentials: true,
-    allowedHeaders: ["Content-Type", "Authorization"],
     methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
+    allowedHeaders: ["Content-Type", "Authorization"],
 }))
 
 // apis 
@@ -32,9 +33,10 @@ app.use("/api/v1/media", mediaRoute);
 app.use("/api/v1/payment", paymentRoute);
 
 
+//Database connection
+connectDB();
 
 app.listen(PORT, () => {
-    connectDB();
     console.log(`Server is listen at Port ${PORT}`);
 });
 
