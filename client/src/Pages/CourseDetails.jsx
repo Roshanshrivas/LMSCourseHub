@@ -17,30 +17,36 @@ const CourseDetails = () => {
   const navigate = useNavigate();
   const params = useParams();
   const courseId = params.courseId;
+
   const { course } = useSelector(store => store.course);
   const { user } = useSelector(store => store.auth);
-  const selectedCourse = course.find(course => course._id === courseId);
+
+  const selectedCourse = course?.find(course => course?._id === courseId);
   const [courseLecture, setCourseLecture] = useState(null);
   const isEnrolled = user?.enrolledCourses?.includes(courseId);
   const isInstructor = user?._id === selectedCourse?.creator?._id;
 
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const getCourseLecture = async () => {
+       setLoading(true);
         try {
             const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/course/${courseId}/lecture`, 
                 {withCredentials:true}
             )
-            if(res.data.success) {
-                setCourseLecture(res.data.lectures)
+            if(res?.data?.success) {
+                setCourseLecture(res?.data?.lectures)
             }
         } catch (error) {
             console.error(error);
             toast.error("Failed to fetch lectures");
+        } finally {
+            setLoading(false);
         }
-    }
+    };
     getCourseLecture();
-  },[]);
+  }, []);
 
 
 
@@ -55,40 +61,39 @@ const CourseDetails = () => {
      
   try {
     const res = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/payment/generate`,
-      {courseId: course._id},
+      {courseId: course?._id},
       {withCredentials:true}
     );
-    const { order } = res.data;
+    const { order } = res?.data;
 
     const options = {
       key: import.meta.env.VITE_RAZORPAY_KEY_ID,
-      amount: order.amount,
-      currency: order.currency,
+      amount: order?.amount,
+      currency: order?.currency,
       name:"CourseHub",
       description: "Course Purchase",
-      order_id: order.id,
+      order_id: order?.id,
       handler: async (response) => {
         const verify = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/payment/verify`,
           {
-            razorpay_order_id: response.razorpay_order_id,
-            razorpay_payment_id: response.razorpay_payment_id,
-            razorpay_signature: response.razorpay_signature,
-            courseId: course._id,
-            courseTitle: course.courseTitle,
-            author: course.creator, // <-- Make sure this exists
-            amount: course.coursePrice, // <-- Ensure price is present
+            razorpay_order_id: response?.razorpay_order_id,
+            razorpay_payment_id: response?.razorpay_payment_id,
+            razorpay_signature: response?.razorpay_signature,
+            courseId: course?._id,
+            courseTitle: course?.courseTitle,
+            author: course?.creator, // <-- Make sure this exists
+            amount: course?.coursePrice, // <-- Ensure price is present
           }, {withCredentials: true}
         );
         
 
-        if(verify.data.success) {
-          alert("Payment successful & course added!")
+        if(verify?.data?.success) {
           toast.success("Payment successful & course added!")
 
         //update redux
         const updatedUser = {
           ...user,
-          enrolledCourses: [...(user.enrolledCourses || []), course._id],
+          enrolledCourses: [...(user?.enrolledCourses || []), course?._id],
         };
         dispatch(setUser(updatedUser));
 
@@ -107,6 +112,16 @@ const CourseDetails = () => {
     toast.error("Payment Failed")
   }
 };
+
+
+  // ✅ Show loading state if course or lectures are still loading
+  if (loading || !selectedCourse) {
+    return (
+      <div className="h-[60vh] flex items-center justify-center text-xl text-gray-600">
+        Loading course details...
+      </div>
+    );
+  }
   
 
   return (
@@ -125,7 +140,7 @@ const CourseDetails = () => {
                 <ArrowLeft size={16} />
               </Button>
               <h1 className="md:text-2xl font-bold text-gray-800">
-                {selectedCourse.courseTitle}
+                {selectedCourse?.courseTitle}
               </h1>
             </div>
             <div className="flex space-x-4">
@@ -142,24 +157,24 @@ const CourseDetails = () => {
         <div className="p-6 ">
           <div className="flex flex-col lg:flex-row lg:space-x-8">
             <img
-              src={selectedCourse.courseThumbnail}
+              src={selectedCourse?.courseThumbnail}
               alt="thumbnail"
               className="w-full lg:w-1/3 rounded-md mb-4 lg:mb-0"
             />
             <div>
               <p className="text-gray-800 mb-4 font-semibold capitalize">
-                {selectedCourse.subTitle}
+                {selectedCourse?.subTitle}
               </p>
               <p
                 className="mb-4 text-gray-700"
-                dangerouslySetInnerHTML={{ __html: selectedCourse.description }}
+                dangerouslySetInnerHTML={{ __html: selectedCourse?.description }}
               />
               <p className="text-gray-800 font-semibold">
                 ⭐⭐⭐⭐⭐ (4.8) | 1,200 reviews
               </p>
               <div>
                 <p className="text-2xl font-bold text-gray-800">
-                  ₹{selectedCourse.coursePrice}
+                  ₹{selectedCourse?.coursePrice}
                 </p>
                 <p className="text-gray-500 line-through">₹599</p>
               </div>
@@ -211,8 +226,8 @@ const CourseDetails = () => {
                             courseLecture?.map((lecture, index) => {
                                 return <div key={index} className="flex items-center gap-3 bg-gray-200
                                 p-4 rounded-md cursor-pointer">
-                                    <span>{lecture.isPreviewFree ? <PlayCircle size={20} /> : <Lock size={20}/>}</span>
-                                    <p>{lecture.lectureTitle}</p>
+                                    <span>{lecture?.isPreviewFree ? <PlayCircle size={20} /> : <Lock size={20}/>}</span>
+                                    <p>{lecture?.lectureTitle}</p>
                                 </div>
                             })
                         }
@@ -248,15 +263,15 @@ const CourseDetails = () => {
         <div className="p-6 ">
             <h2 className="text-xl font-bold text-gray-800 mb-4">Instructor</h2>
             <div className="flex items-center space-x-4">
-                <img src={selectedCourse.creator.photoUrl} alt="instaructor"  
+                <img src={selectedCourse?.creator?.photoUrl} alt="instaructor"  
                 className="w-16 h-16 rounded-full"/>
                 <div>
-                    <h3 className="text-lg font-bold text-gray-800">{selectedCourse.creator.name}</h3>
+                    <h3 className="text-lg font-bold text-gray-800">{selectedCourse?.creator?.name}</h3>
                     <p className="text-gray-600">Senior full stack devloper</p>
                 </div>
             </div>
             <p className="text-gray-700 mt-4">
-                {selectedCourse.creator.description}
+                {selectedCourse?.creator?.description}
             </p>
         </div>
       </Card>
