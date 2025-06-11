@@ -1,9 +1,8 @@
-import CourseCard from '@/components/CourseCard'
-import { setCourse } from '@/redux/courseSlice'
-import axios from 'axios'
-import React, { useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-
+import CourseCard from "@/components/CourseCard";
+import { setCourse } from "@/redux/courseSlice";
+import axios from "axios";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 // export const coursesJson = [
 //   {
@@ -44,46 +43,63 @@ import { useDispatch, useSelector } from 'react-redux'
 //   }
 // ]
 
-
 const Courses = () => {
-
   const dispatch = useDispatch();
-  const {course} = useSelector(store=>store.course)
+  const { course } = useSelector((store) => store.course);
+
+  const [loading, setLoading] = useState(true); // ✅ loading state
 
   useEffect(() => {
     const getAllPublishedCourse = async () => {
+      setLoading(true);
       try {
-        const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/course/published-courses`,
-          {withCredentials:true}
-        )
-        if(res.data.success){
-          dispatch(setCourse(res.data.courses))
+        const res = await axios.get(
+          `${import.meta.env.VITE_BACKEND_URL}/course/published-courses`,
+          { withCredentials: true }
+        );
+        if (res?.data?.success) {
+          dispatch(setCourse(res?.data?.courses));
         }
       } catch (error) {
-        console.error(error);
+        console.error("Failed to fetch courses", error);
+      } finally {
+        setLoading(false);
       }
-    }
-    getAllPublishedCourse()
-  }, [])
+    };
+    getAllPublishedCourse();
+  }, []);
 
   return (
-    <div className='bg-gray-100 pt-14'>
-        <div className='min-h-screen max-w-7xl mx-auto py-10'>
-            <div className='px-4'>
-                <h1 className='text-4xl font-bold text-center text-gray-800 mb-4'>Our Courses</h1>
-                <p className='text-center text-gray-600 mb-12'>Explore our curated courses to boost your skills and career. 
-                    Whether you're a beginner or an expert, we have something for everyone.</p>
-                    <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6'>
-                        {
-                            course?.map((course, index) => {
-                                return <CourseCard course={course} key={index}/>
-                            })
-                        }
-                    </div>
-            </div>
-        </div>
-    </div>
-  )
-}
+    <div className="bg-gray-100 pt-14">
+      <div className="min-h-screen max-w-7xl mx-auto py-10">
+        <div className="px-4">
+          <h1 className="text-4xl font-bold text-center text-gray-800 mb-4">
+            Our Courses
+          </h1>
+          <p className="text-center text-gray-600 mb-12">
+            Explore our curated courses to boost your skills and career. Whether
+            you're a beginner or an expert, we have something for everyone.
+          </p>
 
-export default Courses
+          {loading ? (
+            <div className="text-center text-lg text-gray-600 py-20">
+              Loading courses...
+            </div>
+          ) : course?.length > 0 ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {course?.map((course, index) => {
+                return <CourseCard course={course} key={index} />;
+              })}
+            </div>
+          ) : (
+            <div className="text-center text-gray-500 py-20">
+              No courses available right now.
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default Courses;
