@@ -19,7 +19,7 @@ const Home = () => {
           you're a beginner or an expert, we have something for everyone.
         </p>
         <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 px-2">
-          {course.slice(0, 6).map((course, index) => {
+          {course?.slice(0, 6).map((course, index) => {
             return <CourseCard course={course} key={index} />;
           })}
         </div>
