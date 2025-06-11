@@ -26,7 +26,7 @@ const Course = () => {
   useEffect(() => {
     const getCreatedCourse = async () => {
       try {
-        const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}course/`, {
+        const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/course/`, {
           withCredentials: true,
         });
         if (res.data.success) {
