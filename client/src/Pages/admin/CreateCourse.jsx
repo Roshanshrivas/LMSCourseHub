@@ -30,7 +30,7 @@ const CreateCourse = () => {
     try {
       setLoading(true);
       const res = await axios.post(
-        `${import.meta.env.VITE_BACKEND_URL}/`,
+        `${import.meta.env.VITE_BACKEND_URL}/course/`,
         { courseTitle, category },
         {
           headers: {

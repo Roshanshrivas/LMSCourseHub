@@ -53,7 +53,7 @@ const Courses = () => {
   useEffect(() => {
     const getAllPublishedCourse = async () => {
       try {
-        const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/published-courses`,
+        const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/course/published-courses`,
           {withCredentials:true}
         )
         if(res.data.success){

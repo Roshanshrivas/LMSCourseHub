@@ -101,7 +101,7 @@ const Navbar = () => {
 
   const logoutHandler = async () => {
     try {
-      const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/logout`, { withCredentials: true });
+      const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/user/logout`, { withCredentials: true });
       if (res.data.success) {
         navigate("/");
         dispatch(setUser(null));
