@@ -148,9 +148,9 @@ const Profile = () => {
                 </div>
                 <DialogFooter>
                     {
-                      loading ? <Button className="bg-blue-400" disabled><Loader2 className="mr-2 w-4 h-4 animate-spin"/>Please Wait</Button> :
-                      <Button onClick={submitHandler} className="bg-blue-500">Save Changes</Button>
-                    }
+                      loading ? ( <Button className="bg-blue-400" disabled><Loader2 className="mr-2 w-4 h-4 animate-spin"/>Please Wait</Button> ) : (
+                      <Button onClick={submitHandler} className="bg-blue-500">Save Changes</Button> 
+                    )}
                 </DialogFooter>
               </DialogContent>
             </Dialog>
