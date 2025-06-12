@@ -45,8 +45,8 @@ const Profile = () => {
     const submitHandler = async (e) => {
        e.preventDefault();
        const formData = new FormData();
-       formData.append("name", input.name);
-        formData.append("description", input.description);
+       formData.append("name", input?.name);
+        formData.append("description", input?.description);
         if(input?.file) {
             formData.append("file", input?.file);
         }
@@ -58,7 +58,7 @@ const Profile = () => {
             },
             withCredentials: true,
            })
-           if(res.data.success) {
+           if(res?.data?.success) {
              setOpen(false)
              toast.success(res.data.message);
              dispatch(setUser(res.data.user));
@@ -68,8 +68,7 @@ const Profile = () => {
         } finally {
             setLoading(false);
         }
-       
-    }
+    };
 
   return (
     <div className="mt-14 bg-gray-100 py-12 lg:px-0">
@@ -86,7 +85,7 @@ const Profile = () => {
 
           {/* user info  */}
           <div className="text-center md:text-left">
-            <h1 className="text-4xl font-bold text-blue-500">Welcome, {user?.name.split(" ")[0] || "User"}</h1>
+            <h1 className="text-4xl font-bold text-blue-500">Welcome, {user?.name?.split(" ")[0] || "User"}</h1>
             <p className="text-lg text-gray-600 mt-3">
               <span className="font-bold">Email : </span> {user?.email || "Email not Available"}
             </p>
@@ -115,7 +114,7 @@ const Profile = () => {
                     <Input
                       id="name"
                       name="name"
-                      value={input.name}
+                      value={input?.name}
                       onChange={changeEventHandler}
                       placeholder="Name"
                       className="col-span-3 text-gray-500"
@@ -128,7 +127,7 @@ const Profile = () => {
                     <Input
                       id="description"
                       name="description"
-                      value={input.description}
+                      value={input?.description}
                       onChange={changeEventHandler}
                       placeholder="description"
                       className="col-span-3 text-gray-500"
@@ -149,7 +148,7 @@ const Profile = () => {
                 </div>
                 <DialogFooter>
                     {
-                      loading ? <Button className="bg-blue-400"><Loader2 className="mr-2 w-4 h-4 animate-spin"/>Please Wait</Button> :
+                      loading ? <Button className="bg-blue-400" disabled><Loader2 className="mr-2 w-4 h-4 animate-spin"/>Please Wait</Button> :
                       <Button onClick={submitHandler} className="bg-blue-500">Save Changes</Button>
                     }
                 </DialogFooter>
