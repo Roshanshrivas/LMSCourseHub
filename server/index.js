@@ -16,8 +16,8 @@ const PORT = process.env.PORT || 3000;
 
 // middleware
 app.use(express.json()) // to parse JSON bodies;
-app.use(cookieParser());
 app.use(express.urlencoded({ extended: true })); // to parse URL-encoded bodies
+app.use(cookieParser());
 
 app.use(cors({
     origin: process.env.CLIENT_URL || "https://lms-course-hub.vercel.app",

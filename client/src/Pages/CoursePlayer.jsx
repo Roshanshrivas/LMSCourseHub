@@ -19,7 +19,7 @@ const CoursePlayer = () => {
     const fetchLectures = async () => {
        setLoading(true);
       try {
-        const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/course/${courseId}/lecture`, {
+        const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/v1/course/${courseId}/lecture`, {
           withCredentials: true,
         });
         if (res?.data?.success) {

@@ -52,7 +52,7 @@ const Profile = () => {
         }
         try {
             setLoading(true);
-           const res = await axios.put(`${import.meta.env.VITE_BACKEND_URL}/user/profile/update`, formData, {
+           const res = await axios.put(`${import.meta.env.VITE_BACKEND_URL}/api/v1/user/profile/update`, formData, {
             headers: {
                 "Content-Type": "multipart/form-data"
             },
@@ -63,6 +63,8 @@ const Profile = () => {
              toast.success(res.data.message);
              dispatch(setUser(res.data.user));
            }
+           console.log("Profile updated successfully:", res.data);
+           
         } catch (error) {
             console.error("Error in submitHandler:", error);
         } finally {

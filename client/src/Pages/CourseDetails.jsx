@@ -32,7 +32,7 @@ const CourseDetails = () => {
     const getCourseLecture = async () => {
        setLoading(true);
         try {
-            const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/course/${courseId}/lecture`, 
+            const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/v1/course/${courseId}/lecture`, 
                 {withCredentials:true}
             )
             if(res?.data?.success) {
@@ -60,7 +60,7 @@ const CourseDetails = () => {
      }
      
   try {
-    const res = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/payment/generate`,
+    const res = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/v1/payment/generate`,
       {courseId: course?._id},
       {withCredentials:true}
     );
@@ -74,7 +74,7 @@ const CourseDetails = () => {
       description: "Course Purchase",
       order_id: order?.id,
       handler: async (response) => {
-        const verify = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/payment/verify`,
+        const verify = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/v1/payment/verify`,
           {
             razorpay_order_id: response?.razorpay_order_id,
             razorpay_payment_id: response?.razorpay_payment_id,

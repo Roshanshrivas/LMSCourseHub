@@ -54,7 +54,7 @@ const Courses = () => {
       setLoading(true);
       try {
         const res = await axios.get(
-          `${import.meta.env.VITE_BACKEND_URL}/course/published-courses`,
+          `${import.meta.env.VITE_BACKEND_URL}/api/v1/course/published-courses`,
           { withCredentials: true }
         );
         if (res?.data?.success) {
