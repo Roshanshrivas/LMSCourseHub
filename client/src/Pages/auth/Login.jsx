@@ -87,7 +87,7 @@ const Login = () => {
       <Button 
         onClick={handleSubmit}
         disabled={loading}
-        className="bg-blue-500 w-full mb-2 hover:bg-blue-600">Login
+        className="bg-blue-500 w-full mb-2 hover:bg-blue-600">
       {
         loading ? (
           <span className="flex items-center justify-center gap-2">
