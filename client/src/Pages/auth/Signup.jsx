@@ -3,6 +3,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import axios from "axios";
+import { Loader2 } from "lucide-react";
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
@@ -18,6 +19,8 @@ const Signup = () => {
     role: "student",
   });
 
+  const [loading, setLoading] = useState(false);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setUser((prev) => ({
@@ -28,7 +31,8 @@ const Signup = () => {
   }
 
   const handleSubmit = async (e) => {
-    e.preventDefault()
+    e.preventDefault();
+    setLoading(true);
     try {
        const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/v1/user/register`, user, {
         headers: {
@@ -36,17 +40,19 @@ const Signup = () => {
         },
         withCredentials: true,
        })
-       if (response.data.success) {
-        navigate("/login")
-        toast.success(response.data.message);
-       }else{
-        toast.error("Something went wrong");
+       if (response?.data?.success) {
+         toast.success(response?.data?.message || "Signup Successfull");
+         navigate("/login");
+       } else{
+        toast.error(response?.data?.message || "Signup failed");
        }
-
     } catch (error) {
       console.error("Error in signup:", error);
+      toast.error(error?.response?.data?.message || "Signup failed");
+    } finally {
+      setLoading(false);
     }
-  }
+  };
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-100 md:mt-5">
@@ -116,7 +122,19 @@ const Signup = () => {
         </div>
         <Button 
         onClick={handleSubmit}
-        className="bg-blue-500 w-full mb-2 hover:bg-blue-600" >Signup</Button>
+        disabled={loading}
+        className="bg-blue-500 w-full mb-2 hover:bg-blue-600" >
+          {
+            loading ? (
+              <span className="flex items-center justify-center gap-2">
+              <Loader2 className="h-4 w-4 animate-spin" />
+              Creating Account...
+            </span>
+            ) : (
+              "Sign Up"
+            )
+          }
+        </Button>
         <p className="text-center">Already have an account? <Link to={"/login"} className="text-blue-500 hover:underline">Log in</Link></p>
       </div>
     </div>

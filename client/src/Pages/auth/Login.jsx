@@ -3,6 +3,7 @@ import { Input } from '@/components/ui/input'
 import { setUser } from '@/redux/authSlice'
 import { Label } from '@radix-ui/react-label'
 import axios from 'axios'
+import { Loader2 } from 'lucide-react'
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
@@ -18,6 +19,8 @@ const Login = () => {
     password: "",
   });
 
+  const [loading, setLoading] = useState(false);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setInput((prev) => ({
@@ -27,7 +30,8 @@ const Login = () => {
   }
 
   const handleSubmit = async (e) => {
-    e.preventDefault()
+    e.preventDefault();
+    setLoading(true);
     try {
        const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/v1/user/login`, input, {
         headers: {
@@ -35,19 +39,20 @@ const Login = () => {
         },
         withCredentials: true,
        })
-       if (response.data.success) {
+       if (response?.data?.success) {
         navigate("/")
-        dispatch(setUser(response.data.user));
-        toast.success(response.data.message);
+        dispatch(setUser(response?.data?.user));
+        toast.success(response?.data?.message || 'Login successful');
        }else{
-        toast.error("Something went wrong");
+        toast.error(response?.data?.message || 'Login failed');
        }
-
     } catch (error) {
       console.error("Error in login:", error);
+      toast.error(error?.response?.data?.message || 'Login error');
+    } finally {
+      setLoading(false);
     }
-    
-  }
+  };
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-100 md:mt-5">
@@ -79,9 +84,22 @@ const Login = () => {
           />
         </div>
 
-        <Button 
+      <Button 
         onClick={handleSubmit}
-        className="bg-blue-500 w-full mb-2 hover:bg-blue-600">Login</Button>
+        disabled={loading}
+        className="bg-blue-500 w-full mb-2 hover:bg-blue-600">Login
+      {
+        loading ? (
+          <span className="flex items-center justify-center gap-2">
+                <Loader2 className="h-4 w-4 animate-spin" /> Logging in...
+          </span>
+        ) : (
+          'Login'
+        )
+      }
+      </Button>
+        
+        
         {/* Divider  */}
         <div className='flex items-center my-6'>
             <hr className='flex-grow border-gray-300'/>
