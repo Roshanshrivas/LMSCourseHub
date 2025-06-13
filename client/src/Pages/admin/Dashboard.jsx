@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { GraduationCap, Users, BookOpenCheck, IndianRupee } from "lucide-react";
+import { GraduationCap, Users, BookOpenCheck, IndianRupee, Loader2 } from "lucide-react";
 import {
   LineChart,
   Line,
@@ -27,6 +27,7 @@ const AdminDashboard = () => {
     earningChartData: [],
     topCourses: [],
   });
+  const [loading, setLoading] = useState(true);
 
   const [topCourses, setTopCourses] = useState([]);
 
@@ -40,6 +41,8 @@ const AdminDashboard = () => {
         setTopCourses(res.data.topCourses);
       } catch (error) {
         console.error("Failed to fetch admin stats", error);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -51,7 +54,7 @@ const AdminDashboard = () => {
   const statCards = [
     {
       label: "Total Courses",
-      value: stats.totalCourses,
+      value: stats?.totalCourses,
       icon: (
         <BookOpenCheck
           size={20}
@@ -61,20 +64,28 @@ const AdminDashboard = () => {
     },
     {
       label: "Total Students",
-      value: stats.totalStudents,
+      value: stats?.totalStudents,
       icon: <Users size={20} className="text-green-600" />,
     },
     {
       label: "Enrollments",
-      value: stats.totalEnrollments,
+      value: stats?.totalEnrollments,
       icon: <GraduationCap size={20} className="text-yellow-600" />,
     },
     {
       label: "Total Revenue",
-      value: stats.totalEarning,
+      value: stats?.totalEarning,
       icon: <IndianRupee size={20} className="text-rose-600" />,
     },
   ];
+
+   if (loading) {
+    return (
+      <div className="flex items-center justify-center h-[70vh]">
+        <Loader2 className="animate-spin text-blue-600 w-10 h-10" />
+      </div>
+    );
+  }
 
   return (
     <div className="p-6 space-y-6">
@@ -101,7 +112,7 @@ const AdminDashboard = () => {
           </CardHeader>
           <CardContent>
             <ResponsiveContainer width="100%" height={300}>
-              <LineChart data={stats.earningChartData}>
+              <LineChart data={stats?.earningChartData}>
                 <XAxis dataKey="month" />
                 <YAxis />
                 <Tooltip />
@@ -138,16 +149,16 @@ const AdminDashboard = () => {
                   <tr key={idx} className="border-b">
                     <td className="px-4 py-2">
                       <img
-                        src={course.courseThumbnail}
-                        alt={course.courseTitle}
+                        src={course?.courseThumbnail}
+                        alt={course?.courseTitle}
                         className="w-12 h-12 rounded object-cover"
                       />
                     </td>
                     <td className="px-4 py-2 font-medium">
-                      {course.courseTitle}
+                      {course?.courseTitle}
                     </td>
-                    <td className="px-4 py-2">{course.enrolledStudents}</td>
-                    <td className="px-4 py-2">₹{course.totalEarning}</td>
+                    <td className="px-4 py-2">{course?.enrolledStudents}</td>
+                    <td className="px-4 py-2">₹{course?.totalEarning}</td>
                   </tr>
                 ))}
               </tbody>
