@@ -54,10 +54,10 @@ const LectureTab = () => {
                         videoUrl: res.data.url,
                         publicId: res.data.data.public_id,
                     })
-                    toast.success(res?.data?.message)
+                    toast.success(res?.data?.message || "Video uploaded successfully!")
                 }
             } catch (error) {
-                console.error(error);
+                console.error("Video upload error:", error);
                 toast.error("video upload Failed")
             } finally {
                 setMediaProgress(false);
@@ -86,10 +86,12 @@ const LectureTab = () => {
                 l._id === lectureId ? res.data.lecture : l
             );
             dispatch(setLecture(updatedLectures));
-            toast.success(res.data.message);
-            }
+            toast.success(res.data.message || "Lecture updated");
+            } else {
+            toast.error(res.data.message || "Failed to update lecture");
+           }
         } catch (error) {
-            console.error(error, "something wrong")
+            console.error("Edit lecture error:", error);
             toast.error("Failed to edit lecture")
         } finally {
             setLoading(false);
@@ -105,17 +107,16 @@ const LectureTab = () => {
             )
             if(res.data.success){
                 navigate(`/admin/course/${courseId}/lecture`)
-                toast.success(res.data.message)
+                toast.success(res.data.message || "Lecture removed")
             }else {
-                toast.error(res.data.message)
+                toast.error(res.data.message || "Failed to remove lecture")
             }
         } catch (error) {
-            console.error(error, "Failed to delete lecture")
+            console.error("Delete lecture error:", error);
             toast.error("Failed to delete lecture")
         } finally{
             setRemoveLoading(false);
         }
-
     }
 
 
